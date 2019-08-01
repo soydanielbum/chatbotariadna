@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 //Token generado por Facebook Developers
 const APP_TOKEN =
-  'EAAVIZB5LbIRwBAAg7u1aZAlXWmzHOsyahS5hYM2GDJdlPkxtZB7eGZAopwoOZATqRbZCyqasCl2qXHwdiHOGfwHZBCFMKZBLoYrak9YfZBEcGoqEzYkHx8NywIXJJUf2pHVQ1tZAdka9V3QYShypE7TuXplcjpfQOGHCUQhjevl948YAZDZD';
+  'EAAVIZB5LbIRwBAFdTaQZBTQ600ZA3WEqblu2Pg3ZCbXZClOVnsfZBCX7xsbPP9s5JOQLHnZA6DM9ZClzxOZAV7RHJAQuiQx0XNp7CxLGo8gUGxgwaWCeMexYslDtvDEYA5MXqRiUXLMphTCtPgLJQznyxDJMDu78dWG0GVHkolqtX3QZDZD';
 
 let app = express();
 
@@ -57,16 +57,22 @@ function evaluarMensaje(senderID, messageText) {
   } else if (isContain(messageText, 'info')) {
     mensaje =
       'Hola que tal nuestro número de teléfono es: 1234-1233\nmi correo es: xxxx@gmail.com';
+  } else if (isContain(messageText, 'comparte')) {
+    enviarBotonCompartir(senderID);
+  } else if (isContain(messageText, 'listar')) {
+    enviarLista(senderID);
+  } else if (isContain(messageText, 'rapirespuesta')) {
+    enviarRespuestaRapida(senderID);
   } else if (isContain(messageText, 'perro')) {
     enviarMensajeImage(senderID);
-  } else if (isContain(messageText, 'daniel')) {
+  } else if (isContain(messageText, 'perfil')) {
     enviarMensajeTemplate(senderID);
   } else if (isContain(messageText, 'hola')) {
-    mensaje = 'Hola {{first name}} amigo como estas?';
+    mensaje = 'Hola amigo como estas?';
   } else if (
     isContain(messageText, 'clima') ||
     isContain(messageText, 'temperatura')
-  ) {
+  ) { 
     getClima(function(_temperatura) {
       enviarMensajeTexto(senderID, getMessageClima(_temperatura));
     });
@@ -77,9 +83,173 @@ function evaluarMensaje(senderID, messageText) {
   enviarMensajeTexto(senderID, mensaje);
 }
 
+// Enviar lista de elementos
+function enviarLista(senderID) {
+  let messageData = {
+    recipient: {
+      id: senderID
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'list',
+          top_element_style: 'compact',
+          elements: [
+            {
+              title: 'Classic T-Shirt Collection',
+              subtitle: 'See all our colors',
+              image_url:
+                'https://peterssendreceiveapp.ngrok.io/img/collection.png',
+              buttons: [
+                {
+                  title: 'View',
+                  type: 'web_url',
+                  url: 'https://peterssendreceiveapp.ngrok.io/collection',
+                  messenger_extensions: true,
+                  webview_height_ratio: 'tall',
+                  fallback_url: 'https://peterssendreceiveapp.ngrok.io/'
+                }
+              ]
+            },
+            {
+              title: 'Classic White T-Shirt',
+              subtitle: 'See all our colors',
+              default_action: {
+                type: 'web_url',
+                url: 'https://peterssendreceiveapp.ngrok.io/view?item=100',
+                messenger_extensions: false,
+                webview_height_ratio: 'tall'
+              }
+            },
+            {
+              title: 'Classic Blue T-Shirt',
+              image_url:
+                'https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png',
+              subtitle: '100% Cotton, 200% Comfortable',
+              default_action: {
+                type: 'web_url',
+                url: 'https://peterssendreceiveapp.ngrok.io/view?item=101',
+                messenger_extensions: true,
+                webview_height_ratio: 'tall',
+                fallback_url: 'https://peterssendreceiveapp.ngrok.io/'
+              },
+              buttons: [
+                {
+                  title: 'Shop Now',
+                  type: 'web_url',
+                  url: 'https://peterssendreceiveapp.ngrok.io/shop?item=101',
+                  messenger_extensions: true,
+                  webview_height_ratio: 'tall',
+                  fallback_url: 'https://peterssendreceiveapp.ngrok.io/'
+                }
+              ]
+            }
+          ],
+          buttons: [
+            {
+              title: 'View More',
+              type: 'postback',
+              payload: 'payload'
+            }
+          ]
+        }
+      }
+    }
+  };
+  callSendAPI(messageData);
+}
+
+// Enviar respuestas rapida de elementos
+function enviarRespuestaRapida(senderID) {
+  let messageData = {
+    recipient: {
+      id: senderID
+    },
+    messaging_type: 'RESPONSE',
+    message: {
+      text: 'Selecciona un color:',
+      quick_replies: [
+        {
+          content_type: 'text',
+          title: 'Rojo',
+          payload: '<POSTBACK_PAYLOAD>',
+          image_url: 'http://example.com/img/red.png'
+        },
+        {
+          content_type: 'text',
+          title: 'Verde',
+          payload: '<POSTBACK_PAYLOAD>',
+          image_url: 'http://example.com/img/green.png'
+        }
+      ]
+    }
+  };
+  callSendAPI(messageData);
+}
+
+// Enviar Button compartir
+function enviarBotonCompartir(senderID) {
+  let messageData = {
+    recipient: {
+      id: senderID
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'generic',
+          elements: [
+            {
+              title: 'Breaking News: Record Thunderstorms',
+              subtitle:
+                'The local area is due for record thunderstorms over the weekend.',
+              image_url: 'https://thechangreport.com/img/lightning.png',
+              buttons: [
+                {
+                  type: 'element_share',
+                  share_contents: {
+                    attachment: {
+                      type: 'template',
+                      payload: {
+                        template_type: 'generic',
+                        elements: [
+                          {
+                            title: 'I took the hat quiz',
+                            subtitle: 'My result: Fez',
+                            image_url:
+                              'https://bot.peters-hats.com/img/hats/fez.jpg',
+                            default_action: {
+                              type: 'web_url',
+                              url: 'http://m.me/petershats?ref=invited_by_24601'
+                            },
+                            buttons: [
+                              {
+                                type: 'web_url',
+                                url:
+                                  'http://m.me/petershats?ref=invited_by_24601',
+                                title: 'Take Quiz'
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  };
+  callSendAPI(messageData);
+}
+
 // Enviar Perfil
 function enviarMensajeTemplate(senderID) {
-  var messageData = {
+  let messageData = {
     recipient: {
       id: senderID
     },
@@ -99,7 +269,7 @@ function enviarMensajeTemplate(senderID) {
 // Cuerpo de la tarjeta
 function elementTemplate() {
   return {
-    title: 'Daniel Cardona Olaya',
+    title: 'Jack',
     subtitle: 'BI Analyst',
     item_url:
       'https://ep01.epimg.net/elpais/imagenes/2018/06/25/buenavida/1529929537_419627_1529933291_noticia_normal_recorte1.jpg',
@@ -145,6 +315,7 @@ function enviarMensajeImage(senderID) {
   };
   callSendAPI(messageData);
 }
+
 // Enviar Texto plano
 function enviarMensajeTexto(senderID, mensaje) {
   let messageData = {
@@ -196,7 +367,7 @@ function getClima(callback) {
 function callSendAPI(messageData) {
   request(
     {
-      uri: 'https://graph.facebook.com/v3.3/me/messages',
+      uri: 'https://graph.facebook.com/v4.0/me/messages',
       qs: { access_token: APP_TOKEN },
       method: 'POST',
       json: messageData
