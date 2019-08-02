@@ -357,7 +357,7 @@ function getClima(callback) {
         let temperatura = response.weatherObservation.temperature;
         callback(temperatura);
       } else {
-        callback(15); // Temperatura por Defecto
+        callback(20); // Temperatura por Defecto
       }
     }
   );
