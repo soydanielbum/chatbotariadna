@@ -46,6 +46,8 @@ app.post('/webhook', function(req, res) {
 function getMessage(event) {
   let senderID = event.sender.id;
   let messageText = event.message.text;
+  senderActions(senderId);
+  senderActionsTwo(senderID);
   evaluarMensaje(senderID, messageText);
 }
 
@@ -72,7 +74,7 @@ function evaluarMensaje(senderID, messageText) {
   } else if (
     isContain(messageText, 'clima') ||
     isContain(messageText, 'temperatura')
-  ) { 
+  ) {
     getClima(function(_temperatura) {
       enviarMensajeTexto(senderID, getMessageClima(_temperatura));
     });
@@ -385,4 +387,24 @@ function callSendAPI(messageData) {
 function isContain(texto, word) {
   if (typeof texto == 'undefined' || texto.lenght <= 0) return false;
   return texto.indexOf(word) > -1;
+}
+
+function senderActions(senderId) {
+  const messageData = {
+    recipient: {
+      id: senderId
+    },
+    sender_action: 'mark_seen'
+  };
+  callSendApi(messageData);
+}
+
+function senderActionsTwo(senderId) {
+  const messageData = {
+    recipient: {
+      id: senderId
+    },
+    sender_action: 'typing_on'
+  };
+  callSendApi(messageData);
 }
