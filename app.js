@@ -79,8 +79,6 @@ function evaluarMensaje(senderID, messageText) {
   } else {
     mensaje = 'solo se repetir las cosas T-T ' + messageText;
   }
- /*  senderActions(senderId);
-  senderActionsTwo(senderID); */
   enviarMensajeTexto(senderID, mensaje);
 }
 
@@ -386,24 +384,4 @@ function callSendAPI(messageData) {
 function isContain(texto, word) {
   if (typeof texto == 'undefined' || texto.lenght <= 0) return false;
   return texto.indexOf(word) > -1;
-}
-
-function senderActions(senderId) {
-  const messageData = {
-    recipient: {
-      id: senderId
-    },
-    sender_action: 'mark_seen'
-  };
-  callSendApi(messageData);
-}
-
-function senderActionsTwo(senderId) {
-  const messageData = {
-    recipient: {
-      id: senderId
-    },
-    sender_action: 'typing_on'
-  };
-  callSendApi(messageData);
 }
