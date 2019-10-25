@@ -79,8 +79,8 @@ function evaluarMensaje(senderID, messageText) {
   } else {
     mensaje = 'solo se repetir las cosas T-T ' + messageText;
   }
-  senderActions(senderId);
-  senderActionsTwo(senderID);
+ /*  senderActions(senderId);
+  senderActionsTwo(senderID); */
   enviarMensajeTexto(senderID, mensaje);
 }
 
