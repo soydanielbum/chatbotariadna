@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 //Token generado por Facebook Developers
 const APP_TOKEN =
-  'EAAVIZB5LbIRwBAFdTaQZBTQ600ZA3WEqblu2Pg3ZCbXZClOVnsfZBCX7xsbPP9s5JOQLHnZA6DM9ZClzxOZAV7RHJAQuiQx0XNp7CxLGo8gUGxgwaWCeMexYslDtvDEYA5MXqRiUXLMphTCtPgLJQznyxDJMDu78dWG0GVHkolqtX3QZDZD';
+  'EAAVIZB5LbIRwBAI6qAveuqrah9q3yBZC3kJ0HW16ZBZChqe1UCvO8aGEgijLEtrFcYZBI4O8WHyZAafQwUy9ZCCiZC55v3oUNWZAwLvjYw2dKuaJyfYjWumbZCaj99sZAZB8ZCedtmCX9StGTNMs9zlShKsDLDxyTW9FMEC6jjuZCszMadCwZDZD';
 
 let app = express();
 
