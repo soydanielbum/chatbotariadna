@@ -46,8 +46,6 @@ app.post('/webhook', function(req, res) {
 function getMessage(event) {
   let senderID = event.sender.id;
   let messageText = event.message.text;
-  senderActions(senderId);
-  senderActionsTwo(senderID);
   evaluarMensaje(senderID, messageText);
 }
 
@@ -81,7 +79,8 @@ function evaluarMensaje(senderID, messageText) {
   } else {
     mensaje = 'solo se repetir las cosas T-T ' + messageText;
   }
-
+  senderActions(senderId);
+  senderActionsTwo(senderID);
   enviarMensajeTexto(senderID, mensaje);
 }
 
