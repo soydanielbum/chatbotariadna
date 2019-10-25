@@ -46,6 +46,8 @@ app.post('/webhook', function(req, res) {
 function getMessage(event) {
   let senderID = event.sender.id;
   let messageText = event.message.text;
+  senderActions(senderId);
+  senderActionsTwo(senderID);
   evaluarMensaje(senderID, messageText);
 }
 
