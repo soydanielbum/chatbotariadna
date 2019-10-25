@@ -72,13 +72,14 @@ function evaluarMensaje(senderID, messageText) {
   } else if (
     isContain(messageText, 'clima') ||
     isContain(messageText, 'temperatura')
-  ) {
+  ) { 
     getClima(function(_temperatura) {
       enviarMensajeTexto(senderID, getMessageClima(_temperatura));
     });
   } else {
     mensaje = 'solo se repetir las cosas T-T ' + messageText;
   }
+
   enviarMensajeTexto(senderID, mensaje);
 }
 
